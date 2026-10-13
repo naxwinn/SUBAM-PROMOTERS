@@ -1,0 +1,64 @@
+/* ---------------------------------------------------------------
+   SUBAM PROMOTERS — design tokens
+   Palette is fixed by the brand guideline and must not be extended
+   with colours outside this list.
+   --------------------------------------------------------------- */
+:root {
+  /* Brand palette */
+  --color-deep-teal: #063B3D;
+  --color-signature-teal: #087E83;
+  --color-gold: #D4AF6A;
+  --color-ivory: #F9F2E2;
+  --color-midnight-teal: #012224;
+  --color-white: #FFFFFF;
+
+  /* Derived surfaces — tints of the brand colours only, no new hues */
+  --surface-page: var(--color-white);
+  --surface-soft: var(--color-ivory);
+  --surface-dark: var(--color-midnight-teal);
+  --surface-mid: var(--color-deep-teal);
+
+  /* Ink */
+  --ink-strong: var(--color-midnight-teal);
+  --ink-body: #2C4446;
+  --ink-muted: #5A7173;
+  --ink-on-dark: var(--color-ivory);
+  --ink-on-dark-muted: rgba(249, 242, 226, 0.68);
+
+  /* Hairlines — gold stays a selective accent, so the default rule is teal */
+  --rule: rgba(6, 59, 61, 0.14);
+  --rule-on-dark: rgba(249, 242, 226, 0.16);
+  --rule-gold: rgba(212, 175, 106, 0.55);
+
+  /*
+    Two roles, three tokens. `--font-body` stays on the sans so interface
+    chrome — nav, buttons, labels, inputs, metadata — inherits it by default.
+    The serif is opt-in via `--font-prose` and applies to running text only;
+    an interface set entirely in a text serif reads like a book, not a product.
+  */
+  --font-heading: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-prose: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+  --container-width: 1200px;
+  --container-pad: clamp(20px, 5vw, 48px);
+  --section-spacing: clamp(64px, 8vw, 112px);
+  --radius-card: 18px;
+  --radius-button: 8px;
+
+  /* Type scale — 1.25 modular, fluid between 390px and 1200px viewports */
+  --step--1: clamp(0.83rem, 0.80rem + 0.13vw, 0.89rem);
+  --step-0:  clamp(1.00rem, 0.95rem + 0.20vw, 1.06rem);
+  --step-1:  clamp(1.19rem, 1.10rem + 0.38vw, 1.41rem);
+  --step-2:  clamp(1.42rem, 1.26rem + 0.68vw, 1.88rem);
+  --step-3:  clamp(1.69rem, 1.42rem + 1.15vw, 2.50rem);
+  --step-4:  clamp(2.03rem, 1.57rem + 1.90vw, 3.33rem);
+  --step-5:  clamp(2.44rem, 1.69rem + 3.05vw, 4.44rem);
+
+  --header-h: 76px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (max-width: 760px) {
+  :root { --header-h: 64px; }
+}

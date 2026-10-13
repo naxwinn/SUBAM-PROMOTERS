@@ -1,0 +1,63 @@
+.parallax {
+  position: relative;
+  overflow: hidden;            /* clips the oversized layer — no edge ever shows */
+  border-radius: var(--radius-card);
+  background: var(--color-deep-teal);
+  isolation: isolate;
+}
+
+.parallax picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.parallax__img {
+  width: 100%;
+  object-fit: cover;
+  /* Centred so the travel is symmetrical around the resting position */
+  position: absolute;
+  top: 50%;
+  left: 0;
+  translate: 0 -50%;
+  will-change: transform;
+}
+
+/* Scrims use brand teal rather than neutral black, so photographs keep their
+   natural colour while overlaid ivory text stays legible. */
+.parallax--scrim-soft::after,
+.parallax--scrim-strong::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.parallax--scrim-soft::after {
+  background: linear-gradient(
+    to top,
+    rgba(1, 34, 36, 0.62) 0%,
+    rgba(1, 34, 36, 0.18) 45%,
+    rgba(1, 34, 36, 0.05) 100%
+  );
+}
+
+.parallax--scrim-strong::after {
+  background: linear-gradient(
+    to top,
+    rgba(1, 34, 36, 0.86) 0%,
+    rgba(1, 34, 36, 0.55) 50%,
+    rgba(1, 34, 36, 0.38) 100%
+  );
+}
+
+.parallax__content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .parallax__img { will-change: auto; }
+}

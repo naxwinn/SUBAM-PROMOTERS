@@ -1,0 +1,54 @@
+/* Single source of vertical rhythm. Nothing else sets section padding, which
+   keeps specificity flat and avoids the classic cancelling-margin problem. */
+.section {
+  padding-block: var(--section-spacing);
+  position: relative;
+}
+
+.section--page { background: var(--surface-page); }
+.section--soft { background: var(--surface-soft); }
+.section--mid  { background: var(--surface-mid); }
+.section--dark { background: var(--surface-dark); }
+
+.section--ruled::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--rule-gold) 18%,
+    var(--rule-gold) 82%,
+    transparent
+  );
+}
+
+.u-on-dark { color: var(--ink-on-dark); }
+.u-on-dark h1,
+.u-on-dark h2,
+.u-on-dark h3,
+.u-on-dark h4 { color: var(--color-ivory); }
+
+.section-head { max-width: 62ch; }
+.section-head--center { margin-inline: auto; text-align: center; }
+.section-head--center .section-head__lede { margin-inline: auto; }
+
+.section-head__kicker {
+  font-family: var(--font-heading);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--color-signature-teal);
+  margin-bottom: 14px;
+}
+.u-on-dark .section-head__kicker { color: var(--color-gold); }
+
+.section-head__lede {
+  margin-top: 18px;
+  font-size: var(--step-1);
+  line-height: 1.55;
+  color: var(--ink-muted);
+  max-width: 58ch;
+}
+.u-on-dark .section-head__lede { color: var(--ink-on-dark-muted); }

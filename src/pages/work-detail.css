@@ -1,0 +1,62 @@
+.work-detail__status {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-midnight-teal);
+  background: var(--color-gold);
+  padding: 5px 11px;
+  border-radius: 3px;
+}
+
+.work-detail {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+
+.work-detail__main h2 {
+  font-size: var(--step-1);
+  margin-bottom: 10px;
+  padding-top: 26px;
+  border-top: 1px solid var(--rule);
+}
+.work-detail__main h2:first-child { padding-top: 0; border-top: 0; }
+.work-detail__main p { margin-bottom: 26px; color: var(--ink-muted); }
+.work-detail__caption { font-size: 0.82rem; margin-top: 14px; }
+
+.work-detail__aside {
+  position: sticky;
+  top: calc(var(--header-h) + 24px);
+  background: var(--color-ivory);
+  border-radius: var(--radius-card);
+  padding: 28px;
+}
+
+.work-meta { margin: 0 0 24px; display: grid; gap: 20px; }
+.work-meta dt {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-signature-teal);
+  margin-bottom: 7px;
+}
+.work-meta dd { margin: 0; font-size: var(--step--1); color: var(--ink-strong); }
+.work-meta dd ul { margin: 0; padding-left: 18px; display: grid; gap: 5px; }
+.work-meta__muted { color: var(--ink-muted); }
+
+.work-detail__next { margin-top: clamp(48px, 6vw, 80px); padding-top: 26px; border-top: 1px solid var(--rule-gold); }
+.work-detail__next a { text-decoration: none; display: grid; gap: 6px; }
+.work-detail__next-label { font-size: var(--step--1); color: var(--ink-muted); }
+.work-detail__next-title { font-family: var(--font-heading); font-size: var(--step-2); font-weight: 800; color: var(--ink-strong); }
+.work-detail__next a:hover .work-detail__next-title { color: var(--color-signature-teal); }
+
+@media (max-width: 900px) {
+  .work-detail { grid-template-columns: 1fr; }
+  .work-detail__aside { position: static; }
+}

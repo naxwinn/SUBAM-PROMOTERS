@@ -1,0 +1,96 @@
+.site-footer {
+  background: var(--color-midnight-teal);
+  padding-block: clamp(56px, 7vw, 88px) 32px;
+  border-top: 1px solid var(--rule-gold);
+}
+
+.site-footer__top {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(3, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+}
+
+.site-footer__mark {
+  display: block;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--rule-gold);
+  margin-bottom: 20px;
+}
+.site-footer__mark img { width: 100%; height: 100%; object-fit: contain; }
+
+.site-footer__tagline {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--step-1);
+  color: var(--color-gold);
+  margin-bottom: 12px;
+  max-width: 24ch;
+}
+
+.site-footer__blurb {
+  color: var(--ink-on-dark-muted);
+  font-size: var(--step--1);
+  max-width: 38ch;
+}
+
+.site-footer__heading {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 18px;
+}
+
+.site-footer__col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 11px;
+}
+
+.site-footer__col a {
+  color: var(--ink-on-dark-muted);
+  text-decoration: none;
+  font-size: var(--step--1);
+  transition: color 160ms var(--ease);
+}
+.site-footer__col a:hover { color: var(--color-ivory); text-decoration: underline; text-underline-offset: 4px; }
+.site-footer__plain { color: var(--ink-on-dark-muted); font-size: var(--step--1); }
+
+.site-footer__bottom {
+  margin-top: clamp(40px, 5vw, 64px);
+  padding-top: 24px;
+  border-top: 1px solid var(--rule-on-dark);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--ink-on-dark-muted);
+  font-size: var(--step--1);
+}
+
+.site-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.site-footer__legal a { color: var(--ink-on-dark-muted); text-decoration: none; }
+.site-footer__legal a:hover { color: var(--color-ivory); text-decoration: underline; text-underline-offset: 4px; }
+
+@media (max-width: 900px) {
+  .site-footer__top { grid-template-columns: repeat(2, 1fr); }
+  .site-footer__brand { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+  .site-footer__top { grid-template-columns: 1fr; }
+}

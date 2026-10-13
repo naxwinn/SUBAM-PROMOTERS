@@ -1,0 +1,65 @@
+.process {
+  margin-top: clamp(40px, 5vw, 64px);
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(20px, 3vw, 40px);
+  counter-reset: none;
+}
+
+.process__step { position: relative; padding-top: 52px; }
+
+/* Connecting rule, drawn between markers only — stops before the last step. */
+.process__step::before {
+  content: '';
+  position: absolute;
+  top: 17px;
+  left: 36px;
+  right: calc(-1 * clamp(20px, 3vw, 40px));
+  height: 1px;
+  background: var(--rule-gold);
+}
+.process__step:last-child::before { display: none; }
+
+.process__marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--color-gold);
+  border-radius: 50%;
+  background: var(--surface-soft);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-deep-teal);
+}
+
+.process__title { font-size: var(--step-1); margin-bottom: 10px; }
+
+.process__body {
+  font-size: var(--step--1);
+  line-height: 1.65;
+  color: var(--ink-muted);
+  max-width: 34ch;
+}
+
+@media (max-width: 900px) {
+  .process { grid-template-columns: 1fr; gap: 0; }
+  .process__step { padding: 0 0 32px 60px; }
+  .process__step:last-child { padding-bottom: 0; }
+  /* Rule turns vertical when the steps stack. */
+  .process__step::before {
+    top: 36px;
+    bottom: 0;
+    left: 17px;
+    right: auto;
+    width: 1px;
+    height: auto;
+  }
+  .process__marker { top: 0; }
+}

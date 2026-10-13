@@ -1,0 +1,125 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+html:focus-within { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--surface-page);
+  color: var(--ink-body);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* Guards against any transform-based motion widening the page */
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--ink-strong);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--step-5); font-weight: 800; }
+h2 { font-size: var(--step-4); font-weight: 800; }
+h3 { font-size: var(--step-2); font-weight: 700; }
+h4 { font-size: var(--step-1); font-weight: 700; }
+
+/*
+  Running text is the serif. A serif needs a little more leading than a sans at
+  the same size to stay comfortable, so paragraphs set their own line-height
+  rather than inheriting the body value.
+*/
+p,
+blockquote {
+  margin: 0;
+  max-width: 68ch;
+  text-wrap: pretty;
+  font-family: var(--font-prose);
+  line-height: 1.7;
+}
+
+/*
+  Paragraph elements that are interface chrome rather than prose. Most already
+  set --font-heading themselves; these are the remainder.
+*/
+.insight-card__meta,
+.field__error,
+.work-count,
+.article__meta,
+.work-detail__status,
+.work-card__category,
+.work-row__category {
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+a { color: inherit; }
+
+img, picture, svg, video { display: block; max-width: 100%; }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+/* Visible keyboard focus everywhere, on both light and dark surfaces */
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection { background: var(--color-gold); color: var(--color-midnight-teal); }
+
+.u-container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+.u-visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.u-skip-link {
+  position: absolute;
+  top: 0; left: 50%;
+  translate: -50% -120%;
+  z-index: 200;
+  background: var(--color-gold);
+  color: var(--color-midnight-teal);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 0 0 var(--radius-button) var(--radius-button);
+  transition: translate 160ms var(--ease);
+}
+.u-skip-link:focus-visible { translate: -50% 0; }
+
+/* Anchor targets clear the sticky header. Applied to any element that can be
+   linked to, not just :target, because scrollIntoView() honours scroll-margin
+   regardless of whether the URL hash currently matches. */
+:target,
+section[id],
+article[id],
+[data-anchor] { scroll-margin-top: calc(var(--header-h) + 24px); }
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

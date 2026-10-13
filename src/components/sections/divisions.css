@@ -1,0 +1,208 @@
+.divisions__grid {
+  margin-top: clamp(40px, 5vw, 64px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(28px, 4vw, 56px);
+}
+
+.division-card { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+/* ---- Flip faces --------------------------------------------------------- */
+.division-card__front,
+.division-card__back {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.division-card__front { position: relative; }
+
+.division-card__media {
+  display: block;
+  width: 100%;
+  height: 58%;
+  flex: none;
+}
+
+/* Legibility only — kept light so the photograph stays natural. */
+.division-card__front::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 28%;
+  height: 34%;
+  background: linear-gradient(to bottom, transparent, rgba(6, 59, 61, 0.9));
+  pointer-events: none;
+}
+
+.division-card__front-body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 24px 24px;
+  background: var(--color-deep-teal);
+}
+
+.division-card__name {
+  font-size: var(--step-1);
+  font-weight: 800;
+  color: var(--color-ivory);
+  margin-bottom: 10px;
+}
+.division-card__name--back { color: var(--color-gold); }
+
+.division-card__desc {
+  font-size: var(--step--1);
+  line-height: 1.55;
+  color: rgba(249, 242, 226, 0.78);
+}
+
+.division-card__cue {
+  margin-top: auto;
+  padding-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-gold);
+}
+
+/* Rotate glyph sized to the cue text. */
+.division-card__cue-icon {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--color-gold);
+}
+
+/* ---- Back face ---------------------------------------------------------- */
+.division-card__back {
+  padding: 26px 24px;
+  background: var(--color-deep-teal);
+  justify-content: flex-start;
+}
+
+.division-card__intro {
+  font-size: var(--step--1);
+  color: rgba(249, 242, 226, 0.82);
+  margin-bottom: 18px;
+}
+
+.division-card__services {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: grid;
+  gap: 9px;
+}
+
+.division-card__services li {
+  position: relative;
+  padding-left: 18px;
+  font-size: var(--step--1);
+  color: var(--color-ivory);
+}
+.division-card__services li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 7px;
+  height: 1px;
+  background: var(--color-gold);
+}
+
+.division-card__benefit {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: rgba(249, 242, 226, 0.7);
+  margin-bottom: 20px;
+}
+
+.division-card__cta {
+  margin-top: auto;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 20px;
+  border-radius: var(--radius-button);
+  background: var(--color-gold);
+  color: var(--color-midnight-teal);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  /* Sits above the card's own pointer handling so clicks reach the link. */
+  position: relative;
+  z-index: 3;
+}
+.division-card__cta:hover { background: #c39d53; }
+
+.division-card__toggle {
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-button);
+  padding: 9px 18px;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-deep-teal);
+  cursor: pointer;
+  transition: border-color 160ms var(--ease), background-color 160ms var(--ease);
+}
+.division-card__toggle:hover { background: var(--color-white); border-color: var(--rule-gold); }
+
+/* ---- Static equivalent -------------------------------------------------- */
+.division-static {
+  flex: 1 1 380px;
+  max-width: 460px;
+  background: var(--color-deep-teal);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  color: var(--color-ivory);
+}
+.division-static__media { display: block; width: 100%; }
+.division-static__body { padding: 26px 24px 28px; }
+.division-static__body h3 { color: var(--color-ivory); font-size: var(--step-1); margin-bottom: 10px; }
+.division-static__body > p:first-of-type {
+  font-size: var(--step--1);
+  color: rgba(249, 242, 226, 0.78);
+  margin-bottom: 18px;
+}
+
+/* While the card is mid-flip the faces are edge-on and hit-testing is
+   ambiguous, so clicks are suppressed until it settles. The card root still
+   receives them, so clicking to flip keeps working. */
+.division-card.is-settling .flip-card__face {
+  pointer-events: none;
+}
+
+/*
+  Once the flip has settled, make the back face explicitly hit-testable.
+
+  The faces use `backface-visibility: hidden` to hide whichever one points away.
+  At the settled rotation Chromium intermittently treats the *facing* back face
+  as away-facing for hit-testing too, so a click falls through to the 3D rotor
+  behind it and the CTA never receives it — measured at roughly 8 failures in
+  20 attempts. Restoring visibility on the settled face makes hit-testing
+  deterministic; it is applied only after the animation finishes, so the
+  mirrored face is never exposed mid-flip.
+*/
+.division-card.is-flipped .flip-card__face--back {
+  backface-visibility: visible;
+  -webkit-backface-visibility: visible;
+}
+
+/* The front face is now behind a visible back face, so stop it intercepting. */
+.division-card.is-flipped .flip-card__face:not(.flip-card__face--back) {
+  pointer-events: none;
+}

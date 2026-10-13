@@ -1,0 +1,75 @@
+.btn {
+  --btn-bg: transparent;
+  --btn-fg: var(--color-white);
+  --btn-edge: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--step--1);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid var(--btn-edge);
+  border-radius: var(--radius-button);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  transition:
+    background-color 180ms var(--ease),
+    border-color 180ms var(--ease),
+    color 180ms var(--ease);
+}
+
+.btn--md { padding: 13px 24px; }
+.btn--lg { padding: 17px 32px; font-size: var(--step-0); }
+
+.btn--primary {
+  --btn-bg: var(--color-signature-teal);
+  --btn-fg: var(--color-white);
+  --btn-edge: var(--color-signature-teal);
+}
+.btn--primary:hover {
+  --btn-bg: var(--color-deep-teal);
+  --btn-edge: var(--color-deep-teal);
+}
+
+/* Gold: one decisive action per view. */
+.btn--gold {
+  --btn-bg: var(--color-gold);
+  --btn-fg: var(--color-midnight-teal);
+  --btn-edge: var(--color-gold);
+}
+.btn--gold:hover {
+  --btn-bg: #c39d53;
+  --btn-edge: #c39d53;
+}
+
+.btn--secondary {
+  --btn-fg: var(--color-deep-teal);
+  --btn-edge: var(--rule);
+}
+.btn--secondary:hover {
+  --btn-bg: var(--color-ivory);
+  --btn-edge: var(--rule-gold);
+}
+
+/* Secondary sitting on a dark surface */
+.u-on-dark .btn--secondary {
+  --btn-fg: var(--color-ivory);
+  --btn-edge: var(--rule-on-dark);
+}
+.u-on-dark .btn--secondary:hover {
+  --btn-bg: rgba(249, 242, 226, 0.08);
+  --btn-edge: var(--rule-gold);
+}
+
+.btn--ghost {
+  --btn-fg: var(--color-signature-teal);
+  padding-inline: 0;
+}
+.btn--ghost:hover { --btn-fg: var(--color-deep-teal); text-decoration: underline; text-underline-offset: 4px; }
+
+.u-on-dark .btn--ghost { --btn-fg: var(--color-gold); }

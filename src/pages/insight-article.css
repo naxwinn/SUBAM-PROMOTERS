@@ -1,0 +1,37 @@
+.article__meta {
+  font-family: var(--font-heading);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--color-gold);
+}
+
+/* Generous measure and leading — this is the one place people read at length. */
+.article {
+  max-width: 68ch;
+  margin-inline: auto;
+}
+
+.article__lede {
+  font-size: var(--step-1);
+  line-height: 1.6;
+  color: var(--ink-strong);
+  padding-bottom: 28px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--rule-gold);
+}
+
+.article p + p { margin-top: 24px; }
+.article p { font-size: var(--step-0); line-height: 1.75; color: var(--ink-body); }
+
+.article__more {
+  max-width: 68ch;
+  margin: clamp(56px, 7vw, 88px) auto 0;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+}
+.article__more h2 { font-size: var(--step-1); margin-bottom: 20px; }
+.article__more ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.article__more li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; }
+.article__more a { font-family: var(--font-heading); font-weight: 700; color: var(--ink-strong); text-decoration: none; }
+.article__more a:hover { color: var(--color-signature-teal); }
+.article__more span { font-size: var(--step--1); color: var(--ink-muted); }
