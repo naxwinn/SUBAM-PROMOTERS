@@ -1,0 +1,141 @@
+/* ---------------------------------------------------------------------------
+   Floating contact buttons.
+   Bottom-left column: Phone above WhatsApp.  Bottom-right: Instagram.
+   --------------------------------------------------------------------------- */
+:root {
+  --fcb-size: 48px;
+  --fcb-gap: 12px;
+  --fcb-inset: 20px;
+  /* Height of the tallest corner stack (two buttons), used by the footer to
+     reserve clearance so these never cover the copyright and legal links. */
+  --fcb-reserve: calc((var(--fcb-size) * 2) + var(--fcb-gap) + var(--fcb-inset) + 16px);
+}
+
+/* The <nav> is a positioning context only — it must not capture clicks across
+   the page, so the two stacks are what actually get placed. */
+.fcb {
+  position: fixed;
+  inset: 0;
+  z-index: 90;          /* below the header (100), so an open menu covers these */
+  pointer-events: none;
+}
+
+.fcb__list {
+  position: absolute;
+  bottom: calc(var(--fcb-inset) + env(safe-area-inset-bottom, 0px));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fcb-gap);
+  pointer-events: auto;
+}
+
+.fcb__list--left  { left: calc(var(--fcb-inset) + env(safe-area-inset-left, 0px)); }
+.fcb__list--right { right: calc(var(--fcb-inset) + env(safe-area-inset-right, 0px)); }
+
+.fcb__btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--fcb-size);
+  height: var(--fcb-size);
+  border-radius: 50%;
+  background: var(--color-signature-teal, #087E83);
+  color: var(--color-white, #FFFFFF);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow:
+    0 2px 6px rgba(1, 34, 36, 0.26),
+    0 1px 2px rgba(1, 34, 36, 0.18);
+  transition:
+    scale 180ms var(--ease, ease),
+    background-color 180ms var(--ease, ease),
+    box-shadow 180ms var(--ease, ease);
+}
+
+.fcb__icon {
+  width: 46%;
+  height: 46%;
+  display: block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fcb__btn:not(.is-disabled):hover {
+    scale: 1.07;
+    background: var(--color-deep-teal, #063B3D);
+    box-shadow:
+      0 6px 16px rgba(1, 34, 36, 0.32),
+      0 2px 4px rgba(1, 34, 36, 0.2);
+  }
+}
+
+.fcb__btn:not(.is-disabled):active { scale: 1; }
+
+.fcb__btn:focus-visible {
+  outline: 2px solid var(--color-gold, #D4AF6A);
+  outline-offset: 3px;
+}
+
+/* ---- Disabled: no href, visibly inert, still announced to assistive tech --- */
+.fcb__btn.is-disabled {
+  background: rgba(8, 126, 131, 0.3);
+  color: rgba(255, 255, 255, 0.55);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ---- Tooltip: opens inward from each corner so it can never overflow ------ */
+.fcb__tip {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: var(--color-midnight-teal, #012224);
+  color: var(--color-ivory, #F9F2E2);
+  font-family: var(--font-heading, system-ui), sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms var(--ease, ease);
+}
+
+.fcb__btn--on-left  .fcb__tip { left: calc(100% + 10px); }
+.fcb__btn--on-right .fcb__tip { right: calc(100% + 10px); }
+
+.fcb__tip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  border: 5px solid transparent;
+}
+.fcb__btn--on-left  .fcb__tip::after { right: 100%; border-right-color: var(--color-midnight-teal, #012224); }
+.fcb__btn--on-right .fcb__tip::after { left: 100%;  border-left-color:  var(--color-midnight-teal, #012224); }
+
+@media (hover: hover) and (pointer: fine) {
+  .fcb__btn:hover .fcb__tip { opacity: 1; }
+}
+.fcb__btn:focus-visible .fcb__tip { opacity: 1; }
+
+/* ---- Mobile: smaller circle, still a comfortable 44px touch target -------- */
+@media (max-width: 760px) {
+  :root {
+    --fcb-size: 44px;
+    --fcb-gap: 10px;
+    --fcb-inset: 16px;
+  }
+  /* Tooltips need a hover pointer; on touch they would only ever flash. */
+  .fcb__tip { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fcb__btn,
+  .fcb__tip { transition: none; }
+  .fcb__btn:not(.is-disabled):hover { scale: 1; }
+}

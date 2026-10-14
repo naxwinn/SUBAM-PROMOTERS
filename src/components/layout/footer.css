@@ -1,6 +1,11 @@
 .site-footer {
   background: var(--color-midnight-teal);
-  padding-block: clamp(56px, 7vw, 88px) 32px;
+  /* The trailing value reserves room for the floating contact buttons, which
+     sit in the bottom corners and would otherwise cover the copyright and
+     legal links once the page is scrolled to the end. --fcb-reserve is defined
+     alongside the buttons, so the two can never drift apart. */
+  padding-block: clamp(56px, 7vw, 88px)
+    calc(var(--fcb-reserve, 32px) + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--rule-gold);
 }
 

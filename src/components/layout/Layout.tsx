@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom'
 
+import FloatingContactButtons from '@/components/FloatingContactButtons'
 import SmoothScroll from '@/components/motion/SmoothScroll'
 import { useOrganisationSchema } from '@/lib/seo'
 
@@ -20,6 +21,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <FloatingContactButtons />
     </>
   )
 }

@@ -1,13 +1,21 @@
 import type { ImageKey } from './assets'
 
-/** Single source of truth for contact details — edit here, updates everywhere. */
+/**
+ * Single source of truth for contact details — edit here, updates everywhere.
+ *
+ * Consumed by the footer, contact page, enquiry form, final CTA, legal pages
+ * and the organisation JSON-LD, so these values must stay consistent with the
+ * floating contact buttons in `components/FloatingContactButtons.jsx`.
+ */
 export const company = {
   name: 'SUBAM PROMOTERS',
   tagline: 'Powering Businesses. Elevating Ventures.',
-  email: 'hello@subampromoters.com',
-  phone: '+91 00000 00000',
-  phoneHref: 'tel:+910000000000',
-  whatsappHref: 'https://wa.me/910000000000',
+  email: 'subampromoters.ventures@gmail.com',
+  phone: '+91 7603 976 398',
+  phoneHref: 'tel:+917603976398',
+  whatsappHref:
+    'https://wa.me/917603976398?text=' +
+    encodeURIComponent("Hi SUBAM PROMOTERS, I'm interested in your services."),
   location: 'Tamil Nadu, India',
   /* Set to a verified postal address before launch. */
   address: '',

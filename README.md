@@ -14,6 +14,7 @@ npm run dev        # http://localhost:5173
 npm run build      # typecheck + production build into dist/
 npm run preview    # serve the built site on http://localhost:4173
 npm run verify     # 73 end-to-end browser checks against the preview server
+node scripts/check-fabs.mjs   # 44 checks on the floating contact buttons
 npm run lint
 ```
 
@@ -25,7 +26,6 @@ These are the only things standing between this build and a live site.
 
 | Item | Where | Why |
 | --- | --- | --- |
-| Real phone number and email | `src/lib/site.ts` → `company` | Currently placeholders (`+91 00000 00000`) |
 | Postal address | `src/lib/site.ts` → `company.address` | Empty; fills the organisation schema |
 | Enquiry endpoint | `.env` → `VITE_ENQUIRY_ENDPOINT` | Without it the form reports a send failure instead of pretending to send |
 | Production domain | `src/lib/seo.ts` → `SITE_ORIGIN`, `public/robots.txt`, `scripts/sitemap.mjs` | Canonical URLs and sitemap |
@@ -95,6 +95,56 @@ need at the same size.
 Verify the split stayed correct after any CSS change with
 `node scripts/audit-fonts.mjs`, which reports the computed family for 32
 elements across four pages.
+
+## Floating contact buttons
+
+Pinned to the two bottom corners, mounted once in `Layout` so they appear on
+every route:
+
+- **Bottom-left column** — Phone on top, WhatsApp directly beneath it
+- **Bottom-right corner** — Instagram
+
+Icons come from `react-icons` (`FaPhoneAlt`, `FaWhatsapp`, `FaInstagram`).
+
+### Where to change the numbers
+
+Both live at the top of `src/components/FloatingContactButtons.jsx`, in the
+block marked `CONFIGURATION`:
+
+```js
+const WHATSAPP_NUMBER   = '917603976398'   // line 20
+const CALL_PHONE_NUMBER = '917603976398'   // line 23
+```
+
+Format: **country code first, digits only** — no `+`, spaces or dashes.
+`+91 7603 976 398` becomes `917603976398`. The `tel:` link adds the `+` itself,
+because E.164 needs it and `wa.me` does not.
+
+The two are independent. Set either to `''` and that button renders greyed out
+and non-interactive rather than producing a broken link; the others are
+unaffected.
+
+**Keep these in step with `company` in `src/lib/site.ts`**, which supplies the
+same phone, email and WhatsApp link to the footer, contact page, enquiry form,
+final CTA, legal pages and the organisation JSON-LD.
+
+### Implementation notes
+
+- Phone uses the plain `tel:` protocol and hands off to the device dialler.
+  Nothing places a call, asks for microphone access, or uses WebRTC or any
+  calling, Instagram or WhatsApp API. No keys, no backend.
+- The WhatsApp message is URL-encoded with `encodeURIComponent()`.
+- The wrapping `<nav>` spans the viewport for positioning but sets
+  `pointer-events: none`, with the two stacks restoring `auto` — otherwise it
+  would swallow every click on the page. There is a regression test for this.
+- `z-index: 90`, below the header's `100`, so an open mobile menu covers them.
+- The footer reads `--fcb-reserve` for its bottom padding, so the buttons can
+  never cover the copyright and legal links.
+- 48px desktop / 44px mobile. Tooltips open inward from each corner so they
+  cannot overflow, and are hidden on touch where they would only flash.
+
+Verify with `node scripts/check-fabs.mjs` (67 checks across five viewports,
+including a site-wide sweep for old phone/email placeholders).
 
 ## Motion
 
