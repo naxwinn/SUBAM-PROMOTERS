@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
+# Our Work is still in development. The routes also redirect to the homepage,
+# so this is belt-and-braces rather than the only protection.
+Disallow: /our-work/
+Disallow: /our-work
+
 Sitemap: https://www.subampromoters.com/sitemap.xml

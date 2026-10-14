@@ -1,6 +1,6 @@
 import Button from '@/components/ui/Button'
 import { images } from '@/lib/assets'
-import { company } from '@/lib/site'
+import { company, features } from '@/lib/site'
 
 import './final-cta.css'
 
@@ -33,9 +33,16 @@ export default function FinalCTA() {
           <Button to="/contact/" variant="gold" size="lg">
             Discuss Your Project
           </Button>
-          <Button to="/our-work/" variant="secondary" size="lg">
-            See how we approach a brief
-          </Button>
+          {/* Falls back to a published page while Our Work is unreleased. */}
+          {features.ourWorkPublic ? (
+            <Button to="/our-work/" variant="secondary" size="lg">
+              See how we approach a brief
+            </Button>
+          ) : (
+            <Button to="/about/" variant="secondary" size="lg">
+              How we work
+            </Button>
+          )}
         </div>
 
         <p className="final-cta__direct">

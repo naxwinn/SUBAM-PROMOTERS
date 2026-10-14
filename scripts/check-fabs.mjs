@@ -86,9 +86,9 @@ blocked === 0
   : bad('pointer-events', `${blocked} sample points hit the nav`)
 
 /* Prove it by actually clicking a page link through the overlay. */
-await p.locator('.site-nav__link', { hasText: 'Our Work' }).click()
+await p.locator('.site-nav__link', { hasText: 'Insights' }).click()
 await p.waitForTimeout(1200)
-new URL(p.url()).pathname === '/our-work/'
+new URL(p.url()).pathname === '/insights/'
   ? ok('page links remain clickable beneath the overlay')
   : bad('click-through', `landed on ${p.url()}`)
 await p.goto(BASE + '/', { waitUntil: 'networkidle' })

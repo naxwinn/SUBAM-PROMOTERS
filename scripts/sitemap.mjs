@@ -2,6 +2,10 @@ import { writeFile } from 'node:fs/promises'
 
 const ORIGIN = process.env.SITE_ORIGIN ?? 'https://www.subampromoters.com'
 
+/* Keep in step with `features.ourWorkPublic` in src/lib/site.ts. While the
+   section is unpublished its URLs are left out of the sitemap entirely. */
+const OUR_WORK_PUBLIC = false
+
 const WORK = [
   'hillside-villa-launch', 'plotted-development-campaign', 'studio-content-system',
   'campaign-performance-review', 'boulevard-brand-film', 'villa-identity-study',
@@ -17,12 +21,13 @@ const routes = [
   ['/about/', '0.8'],
   ['/real-estate-promotion/', '0.9'],
   ['/digital-marketing/', '0.9'],
-  ['/our-work/', '0.8'],
   ['/insights/', '0.7'],
   ['/contact/', '0.9'],
   ['/privacy-policy/', '0.3'],
   ['/terms-and-conditions/', '0.3'],
-  ...WORK.map(slug => [`/our-work/${slug}/`, '0.6']),
+  ...(OUR_WORK_PUBLIC
+    ? [['/our-work/', '0.8'], ...WORK.map(slug => [`/our-work/${slug}/`, '0.6'])]
+    : []),
   ...INSIGHTS.map(slug => [`/insights/${slug}/`, '0.6']),
 ]
 

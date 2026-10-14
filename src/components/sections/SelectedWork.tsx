@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Parallax from '@/components/motion/Parallax'
 import Button from '@/components/ui/Button'
 import { Section, SectionHead } from '@/components/ui/Section'
-import { workItems } from '@/lib/site'
+import { features, workItems } from '@/lib/site'
 
 import './selected-work.css'
 
@@ -12,6 +12,10 @@ import './selected-work.css'
  * nothing here is presented as delivered client work, because none of it is.
  */
 export default function SelectedWork() {
+  /* Nothing is promoted while the Our Work page is unpublished — every link
+     in this section points into it. */
+  if (!features.ourWorkPublic) return null
+
   const featured = workItems.slice(0, 3)
 
   return (

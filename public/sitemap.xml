@@ -17,10 +17,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.subampromoters.com/our-work/</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://www.subampromoters.com/insights/</loc>
     <priority>0.7</priority>
   </url>
@@ -35,30 +31,6 @@
   <url>
     <loc>https://www.subampromoters.com/terms-and-conditions/</loc>
     <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.subampromoters.com/our-work/hillside-villa-launch/</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.subampromoters.com/our-work/plotted-development-campaign/</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.subampromoters.com/our-work/studio-content-system/</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.subampromoters.com/our-work/campaign-performance-review/</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.subampromoters.com/our-work/boulevard-brand-film/</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.subampromoters.com/our-work/villa-identity-study/</loc>
-    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.subampromoters.com/insights/what-buyers-look-for-before-a-site-visit/</loc>

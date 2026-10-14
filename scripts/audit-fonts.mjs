@@ -30,7 +30,6 @@ await check('/', [
   ['.division-card__cue', 'sans'],
   ['.process__body', 'serif'],
   ['.process__marker', 'sans'],
-  ['.work-row__status', 'sans'],
   ['.site-footer__col a', 'sans'],
   ['.site-footer__blurb', 'serif'],
 ])
@@ -54,11 +53,16 @@ await check('/insights/what-buyers-look-for-before-a-site-visit/', [
   ['.article__more a', 'sans'],
 ])
 
-await check('/our-work/', [
-  ['.work-card__title', 'sans'],
-  ['.work-card__brief', 'serif'],
-  ['.work-card__category', 'sans'],
-  ['.work-filter', 'sans'],
-  ['.work-count', 'sans'],
+await check('/insights/', [
+  ['.insights__title', 'sans'],
+  ['.insights__summary', 'serif'],
+  ['.insights__category', 'sans'],
+  ['.insights__time', 'sans'],
+  ['.insights__hint', 'sans'],
+  ['.insights__read', 'sans'],
+  ['.insights__cta-title', 'sans'],
+  ['.insights__cta-body', 'serif'],
+  ['.ag-panel__text', 'sans'],
 ])
+
 await b.close()

@@ -8,7 +8,7 @@ import Button from '@/components/ui/Button'
 import { Section, SectionHead } from '@/components/ui/Section'
 import { images } from '@/lib/assets'
 import { useSeo } from '@/lib/seo'
-import { divisions, processSteps, workItems, type Division } from '@/lib/site'
+import { divisions, features, processSteps, workItems, type Division } from '@/lib/site'
 
 import './division-page.css'
 
@@ -82,7 +82,7 @@ export default function DivisionPage({ id }: { id: Division['id'] }) {
         </div>
       </Section>
 
-      {related.length > 0 ? (
+      {features.ourWorkPublic && related.length > 0 ? (
         <Section tone="page">
           <SectionHead
             title="Related work"

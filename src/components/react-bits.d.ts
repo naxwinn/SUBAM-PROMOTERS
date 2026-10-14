@@ -94,3 +94,43 @@ declare module '@/components/PeekRating' {
   const PeekRating: (props: PeekRatingProps) => JSX.Element
   export default PeekRating
 }
+
+declare module '@/components/AccordionGallery' {
+  export interface AccordionGalleryItem {
+    /** Image URL. Imported asset paths are fine. */
+    image: string
+    /** Short panel caption. */
+    label?: string
+    /** Destination for the panel. Omit to make it selectable but inert. */
+    link?: string
+    /** Falls back to `label` when absent. */
+    alt?: string
+  }
+
+  export interface AccordionGalleryProps {
+    items?: AccordionGalleryItem[]
+    defaultIndex?: number
+    accentColor?: string
+    overlayColor?: string
+    textColor?: string
+    height?: number
+    gap?: number
+    radius?: number
+    expandRatio?: number
+    orientation?: 'horizontal' | 'vertical'
+    duration?: number
+    ease?: string
+    parallax?: number
+    tilt?: number
+    stagger?: number
+    trigger?: 'hover' | 'click'
+    showLabels?: boolean
+    grayscale?: boolean
+    className?: string
+    /** Local addition: reports the active panel index, initial value included. */
+    onChange?: (index: number) => void
+  }
+
+  const AccordionGallery: (props: AccordionGalleryProps) => JSX.Element
+  export default AccordionGallery
+}

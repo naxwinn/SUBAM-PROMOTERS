@@ -13,12 +13,16 @@ npm install
 npm run dev        # http://localhost:5173
 npm run build      # typecheck + production build into dist/
 npm run preview    # serve the built site on http://localhost:4173
-npm run verify     # 73 end-to-end browser checks against the preview server
-node scripts/check-fabs.mjs   # 44 checks on the floating contact buttons
+npm run verify     # 66 end-to-end browser checks against the preview server
 npm run lint
+
+# Focused suites (preview server must be running)
+node scripts/check-fabs.mjs      # 67 checks — floating buttons + contact details
+node scripts/check-insights.mjs  # 70 checks — Insights gallery + Our Work removal
+node scripts/audit-fonts.mjs     # 35 checks — sans/serif split
 ```
 
-`npm run verify` needs the preview server running first. It runs 73 checks.
+`npm run verify` needs the preview server running first.
 
 ## Before launch
 
@@ -145,6 +149,64 @@ final CTA, legal pages and the organisation JSON-LD.
 
 Verify with `node scripts/check-fabs.mjs` (67 checks across five viewports,
 including a site-wide sweep for old phone/email placeholders).
+
+## Our Work — temporarily unpublished
+
+The Our Work section is still in development and is not reachable. One flag
+controls all of it, in `src/lib/site.ts`:
+
+```ts
+export const features = {
+  ourWorkPublic: false,
+}
+```
+
+While it is false:
+
+- the entry is filtered out of `primaryNav`, so it leaves the header, mobile
+  menu, footer and the 404 page's link list;
+- `SelectedWork` on the homepage and the "Related work" block on both division
+  pages render nothing, and the final CTA's secondary button points at `/about/`;
+- every `/our-work/*` path redirects to the homepage — a redirect rather than a
+  404 because these URLs are meant to return;
+- the URLs are dropped from `sitemap.xml` and disallowed in `robots.txt`.
+
+Nothing was deleted. `OurWork.tsx`, `WorkDetail.tsx`, their stylesheets and the
+`workItems` data are all still in the repo and still imported.
+
+**To publish it again:** set the flag to `true`, mirror `OUR_WORK_PUBLIC` in
+`scripts/sitemap.mjs`, run `npm run sitemap`, and drop the `Disallow` lines from
+`public/robots.txt`.
+
+## Insights — accordion gallery
+
+`/insights/` is built around the React Bits `AccordionGallery` rather than a
+vertical article list. It is the one page that steps away from the dark teal
+palette: white background, `#082A35` headings, `#087E83` accents, `#D9E1E3`
+hairlines — the photography carries the colour instead of the chrome.
+
+Panels are generated from the published `insights` array, so the gallery always
+matches the real article count. The detail block beneath it — category, reading
+time, title, summary, link — tracks the selected panel.
+
+Three small additions were made to the supplied component, all optional and
+backwards compatible:
+
+- an `onChange(index)` callback, so the page can mirror the active panel;
+- an `onError` handler on each image, so a failed load shows a brand-tinted
+  panel rather than a broken icon;
+- the `max-width: 520px` rule is scoped to `:not(--vertical)`. It sets
+  `height: auto`, which removes the free space flex-grow distributes, so an
+  explicitly vertical gallery would otherwise collapse to equal panels.
+
+The page switches the gallery to `orientation="vertical"` below 860px, because
+three horizontal panels become unusable slivers on a phone.
+
+**Activation:** a pointer press on an unselected panel only selects it; opening
+the article takes a second, deliberate click. This needs care — clicking an
+anchor fires `focus` before `click`, and the gallery selects on focus, so a
+naive check against the live active index navigates on the very first click.
+The page samples the active index at `pointerdown` instead.
 
 ## Motion
 

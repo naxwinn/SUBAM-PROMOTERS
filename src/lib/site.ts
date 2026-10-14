@@ -21,9 +21,25 @@ export const company = {
   address: '',
 }
 
+/**
+ * Feature flags.
+ *
+ * `ourWorkPublic` is the single switch for the Our Work section. While it is
+ * false the page is unreachable: it leaves the navigation and footer, its
+ * promotional blocks stop rendering, its routes redirect to the homepage, and
+ * it is dropped from the sitemap and disallowed in robots.txt.
+ *
+ * The page implementation, its styles and its data all remain in the repo.
+ * Set this to true and run `npm run sitemap` to publish it again — nothing
+ * else needs editing.
+ */
+export const features = {
+  ourWorkPublic: false,
+}
+
 export type NavItem = { label: string; to: string }
 
-export const primaryNav: NavItem[] = [
+const allNav: NavItem[] = [
   { label: 'Home', to: '/' },
   { label: 'About Us', to: '/about/' },
   { label: 'Real Estate', to: '/real-estate-promotion/' },
@@ -32,6 +48,11 @@ export const primaryNav: NavItem[] = [
   { label: 'Insights', to: '/insights/' },
   { label: 'Contact', to: '/contact/' },
 ]
+
+/** What the header, mobile menu, footer and 404 page all render. */
+export const primaryNav: NavItem[] = allNav.filter(
+  item => item.to !== '/our-work/' || features.ourWorkPublic,
+)
 
 export const legalNav: NavItem[] = [
   { label: 'Privacy Policy', to: '/privacy-policy/' },

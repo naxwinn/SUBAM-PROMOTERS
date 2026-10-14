@@ -15,8 +15,6 @@ const ROUTES = [
   ['/about/', 'about'],
   ['/real-estate-promotion/', 'real-estate'],
   ['/digital-marketing/', 'digital-marketing'],
-  ['/our-work/', 'our-work'],
-  ['/our-work/hillside-villa-launch/', 'work-detail'],
   ['/insights/', 'insights'],
   ['/insights/what-buyers-look-for-before-a-site-visit/', 'insight-article'],
   ['/contact/', 'contact'],
@@ -193,7 +191,6 @@ const NAV_PAGES = [
   ['About Us', '/about/'],
   ['Real Estate', '/real-estate-promotion/'],
   ['Digital Marketing', '/digital-marketing/'],
-  ['Our Work', '/our-work/'],
   ['Insights', '/insights/'],
   ['Contact', '/contact/'],
 ]
@@ -213,18 +210,18 @@ for (let i = 0; i < NAV_PAGES.length; i++) {
 
 /* Footer links, breadcrumbs and in-page cards use the same router, but check
    one of each in case a different link type behaves differently. */
-await page.goto(BASE + '/our-work/', { waitUntil: 'networkidle' })
+await page.goto(BASE + '/insights/', { waitUntil: 'networkidle' })
 await page.mouse.wheel(0, 2000)
 await page.waitForTimeout(800)
-await page.locator('.work-card__link').first().click()
+await page.locator('.insights__read').first().click()
 await page.waitForTimeout(1300)
 let y = Math.round(await page.evaluate(() => window.scrollY))
-if (y <= 2) pass('scroll resets opening a work card')
-else fail('scroll reset work card', `landed at y=${y}`)
+if (y <= 2) pass('scroll resets opening an insight')
+else fail('scroll reset insight', `landed at y=${y}`)
 
 await page.mouse.wheel(0, 1600)
 await page.waitForTimeout(800)
-await page.locator('.breadcrumbs a', { hasText: 'Our Work' }).first().click()
+await page.locator('.breadcrumbs a', { hasText: 'Insights' }).first().click()
 await page.waitForTimeout(1300)
 y = Math.round(await page.evaluate(() => window.scrollY))
 if (y <= 2) pass('scroll resets via breadcrumb')
@@ -232,7 +229,9 @@ else fail('scroll reset breadcrumb', `landed at y=${y}`)
 
 await page.mouse.wheel(0, 1800)
 await page.waitForTimeout(800)
-await page.locator('.site-footer__col a', { hasText: 'Insights' }).first().click()
+/* Must be a route we are not already on — the breadcrumb step above lands on
+   /insights/, and clicking a link to the current route is a no-op. */
+await page.locator('.site-footer__col a', { hasText: 'About Us' }).first().click()
 await page.waitForTimeout(1300)
 y = Math.round(await page.evaluate(() => window.scrollY))
 if (y <= 2) pass('scroll resets via footer link')
@@ -292,10 +291,10 @@ if (menuOpen) pass('mobile menu opens')
 else fail('mobile menu', 'panel did not become visible')
 await mp.screenshot({ path: `${SHOTS}/mobile-menu.png` })
 
-await mp.locator('.mobile-menu__link', { hasText: 'Our Work' }).click()
+await mp.locator('.mobile-menu__link', { hasText: 'Insights' }).click()
 await mp.waitForTimeout(800)
 const menuClosed = !(await mp.locator('#mobile-menu').isVisible())
-if (menuClosed && mp.url().includes('/our-work/')) pass('mobile menu closes after navigation')
+if (menuClosed && mp.url().includes('/insights/')) pass('mobile menu closes after navigation')
 else fail('mobile menu close', `visible=${!menuClosed} url=${mp.url()}`)
 
 /* Mobile navigation must also land at the top, and must release the body

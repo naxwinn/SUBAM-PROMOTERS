@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 
 import Layout from '@/components/layout/Layout'
+import { features } from '@/lib/site'
 import Home from '@/pages/Home'
 
 /**
@@ -59,10 +60,23 @@ export default function App() {
           <Route path="/digital-marketing/" element={<DivisionPage id="digital" />} />
           <Route path="/digital-marketing" element={<Navigate to="/digital-marketing/" replace />} />
 
-          <Route path="/our-work/" element={<OurWork />} />
-          <Route path="/our-work" element={<Navigate to="/our-work/" replace />} />
-          <Route path="/our-work/:slug/" element={<WorkDetail />} />
-          <Route path="/our-work/:slug" element={<WorkDetail />} />
+          {/*
+            Our Work is still in development. While `features.ourWorkPublic` is
+            false every /our-work path redirects to the homepage, so no
+            unfinished content is reachable — a redirect rather than a 404
+            because these URLs are intended to return later. The page
+            components are still imported above and ready to re-enable.
+          */}
+          {features.ourWorkPublic ? (
+            <>
+              <Route path="/our-work/" element={<OurWork />} />
+              <Route path="/our-work" element={<Navigate to="/our-work/" replace />} />
+              <Route path="/our-work/:slug/" element={<WorkDetail />} />
+              <Route path="/our-work/:slug" element={<WorkDetail />} />
+            </>
+          ) : (
+            <Route path="/our-work/*" element={<Navigate to="/" replace />} />
+          )}
 
           <Route path="/insights/" element={<Insights />} />
           <Route path="/insights" element={<Navigate to="/insights/" replace />} />
