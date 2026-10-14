@@ -284,16 +284,20 @@ for (const [route] of ROUTES.slice(0, 6)) {
 }
 
 await mp.goto(BASE + '/', { waitUntil: 'networkidle' })
-await mp.locator('.menu-toggle').click()
-await mp.waitForTimeout(400)
-const menuOpen = await mp.locator('#mobile-menu').isVisible()
+await mp.locator('.sm-toggle').click()
+await mp.waitForTimeout(900)
+const menuOpen = await mp.evaluate(() =>
+  document.querySelector('.staggered-menu-wrapper')?.hasAttribute('data-open') ?? false,
+)
 if (menuOpen) pass('mobile menu opens')
 else fail('mobile menu', 'panel did not become visible')
 await mp.screenshot({ path: `${SHOTS}/mobile-menu.png` })
 
-await mp.locator('.mobile-menu__link', { hasText: 'Insights' }).click()
+await mp.locator('.sm-panel-item', { hasText: /^Insights$/ }).first().click()
 await mp.waitForTimeout(800)
-const menuClosed = !(await mp.locator('#mobile-menu').isVisible())
+const menuClosed = await mp.evaluate(() =>
+  !document.querySelector('.staggered-menu-wrapper')?.hasAttribute('data-open'),
+)
 if (menuClosed && mp.url().includes('/insights/')) pass('mobile menu closes after navigation')
 else fail('mobile menu close', `visible=${!menuClosed} url=${mp.url()}`)
 
@@ -308,9 +312,9 @@ for (const [label, path] of [
 ]) {
   await mp.evaluate(() => window.scrollBy(0, 1800))
   await mp.waitForTimeout(600)
-  await mp.locator('.menu-toggle').click()
-  await mp.waitForTimeout(400)
-  await mp.locator('.mobile-menu__link', { hasText: label }).first().click()
+  await mp.locator('.sm-toggle').click()
+  await mp.waitForTimeout(900)
+  await mp.locator('.sm-panel-item', { hasText: new RegExp(`^${label}$`) }).first().click()
   await mp.waitForTimeout(1300)
 
   const y = Math.round(await mp.evaluate(() => window.scrollY))

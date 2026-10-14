@@ -20,6 +20,7 @@ npm run lint
 node scripts/check-fabs.mjs      # 67 checks — floating buttons + contact details
 node scripts/check-insights.mjs  # 70 checks — Insights gallery + Our Work removal
 node scripts/audit-fonts.mjs     # 35 checks — sans/serif split
+node scripts/check-menu.mjs      # 61 checks — mobile navigation
 ```
 
 `npm run verify` needs the preview server running first.
@@ -207,6 +208,69 @@ the article takes a second, deliberate click. This needs care — clicking an
 anchor fires `focus` before `click`, and the gallery selects on focus, so a
 naive check against the live active index navigates on the very first click.
 The page samples the active index at `pointerdown` instead.
+
+## Mobile navigation
+
+Built on the React Bits `StaggeredMenu`, rendered through a **React portal onto
+`document.body`** from `src/components/layout/MobileMenu.tsx`.
+
+### The bug this replaced
+
+The previous panel was a `position: fixed` child of `<header>`. On scroll the
+header gains `backdrop-filter: blur(10px)` — and a filtered element becomes the
+containing block for its fixed descendants. The panel therefore stopped
+resolving against the viewport and resolved against the 64px header box.
+
+Measured on an iPhone 13 viewport:
+
+| Page state | Panel height |
+| --- | --- |
+| At the top (`is-stuck` absent) | 600px of 664px |
+| Scrolled 1500px (`backdrop-filter` active) | **68px** |
+| Same scroll, `backdrop-filter` forced off | 600px |
+
+A two-link scroll window with the rest unreachable, exactly as reported. The
+portal is the structural fix: nothing in the header can contain or clip an
+element that is not inside it.
+
+### How scrolling and the scroll lock work
+
+- The overlay is `position: fixed; inset: 0; height: 100dvh`, with a `100vh`
+  line before it as the fallback for browsers without `dvh`.
+- The panel is the scroll container: `overflow-y: auto`,
+  `-webkit-overflow-scrolling: touch`, `overscroll-behavior-y: contain`, and
+  `min-height: 0` on the flex child so it may shrink below its content.
+- Padding clears the notch and home indicator via `env(safe-area-inset-*)`.
+- The background is locked by pinning `<body>` with `position: fixed` and a
+  negative `top` equal to the current scroll offset. `overflow: hidden` alone
+  is unreliable on iOS Safari. That offset is also what restores the exact
+  scroll position on close rather than dropping the visitor at the top.
+
+### Stacking order
+
+```
+ 90  floating contact buttons
+100  site header
+150  mobile menu overlay
+200  skip link
+```
+
+### Local changes to the supplied component
+
+Three, each marked `LOCAL ADDITION` in the source:
+
+- `prefers-reduced-motion`: the open timeline runs at `timeScale(100)` and the
+  close tween at a 1ms duration, so the panel lands immediately and navigation
+  never waits on an animation.
+- The demo CSS applies `filter: invert(100%)` to the logo below 1024px and
+  640px. Overridden in `mobile-menu.css` so approved artwork is never recoloured.
+- The component's header ships `padding: 2em`. Overriding only `padding-inline`
+  and `padding-top` left the 32px `padding-bottom`, which squeezed the 48px
+  toggle into a 32px content box and clipped it at `-8px` on short screens. The
+  shorthand is reset first.
+
+Links are plain anchors in the component, so `MobileMenu` intercepts clicks in
+the capture phase and hands the URL to the router, then closes the panel.
 
 ## Motion
 

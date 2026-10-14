@@ -1,0 +1,202 @@
+/* ---------------------------------------------------------------------------
+   Mobile navigation — overrides for the React Bits StaggeredMenu.
+
+   STACKING ORDER (deliberate, documented):
+      90  floating contact buttons   (.fcb)
+     100  site header                (.site-header)
+     150  mobile menu overlay        (.mobile-menu-portal)   <- this file
+     200  skip link                  (.u-skip-link)
+
+   The overlay sits above both the header and the floating buttons, so an open
+   panel is never obstructed by them and they cannot intercept its touches.
+   --------------------------------------------------------------------------- */
+.mobile-menu-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  /* Closed, the overlay must not swallow page clicks. The toggle and panel
+     re-enable pointer events for themselves below. */
+  pointer-events: none;
+}
+
+/* Desktop keeps the existing inline nav; this is a mobile control only. */
+@media (min-width: 1081px) {
+  .mobile-menu-portal { display: none; }
+}
+
+/* ---- Viewport sizing -----------------------------------------------------
+   The component ships `height: 100vh`, which on mobile measures the viewport
+   *without* browser chrome and leaves the bottom of the panel under the
+   address bar. `dvh` tracks the chrome as it collapses; the plain `vh` line
+   above it is the fallback for browsers without `dvh`. */
+.mobile-menu-portal .staggered-menu-wrapper.fixed-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  z-index: auto;
+}
+
+/* ---- The scrollable panel ------------------------------------------------ */
+.mobile-menu-portal .staggered-menu-panel {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 100%;
+  left: 0;
+  right: 0;
+  height: 100%;
+  max-height: 100dvh;
+  background: var(--color-midnight-teal, #012224);
+
+  /* The list scrolls on its own, and the scroll does not chain to the page. */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+
+  /* Clear of the status bar at the top and the home indicator at the bottom. */
+  padding-top: calc(var(--header-h, 64px) + 20px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  padding-inline: clamp(20px, 6vw, 40px);
+}
+
+/* A flex child only scrolls when it is allowed to shrink below its content. */
+.mobile-menu-portal .sm-panel-inner {
+  min-height: 0;
+  height: auto;
+  gap: clamp(18px, 4vw, 28px);
+}
+
+.mobile-menu-portal .sm-prelayer { pointer-events: none; }
+
+/* ---- Header strip: toggle only ------------------------------------------- */
+/*
+  The component ships `padding: 2em` here. Overriding only padding-inline and
+  padding-top left the 32px padding-bottom in place, which squeezed the 48px
+  toggle into a 32px content box and centred it at -8px — clipped above the
+  viewport on short screens. The shorthand is reset first, deliberately.
+*/
+.mobile-menu-portal .staggered-menu-header {
+  pointer-events: none;
+  padding: 0 var(--container-pad, 20px);
+  padding-top: env(safe-area-inset-top, 0px);
+  height: calc(var(--header-h, 64px) + env(safe-area-inset-top, 0px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* The site header already shows the logo. Showing it again while the panel is
+   closed would be a duplicate, so it only appears once the panel covers it. */
+.mobile-menu-portal .sm-logo {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease;
+}
+.mobile-menu-portal .staggered-menu-wrapper[data-open] .sm-logo {
+  opacity: 1;
+  visibility: visible;
+}
+
+/*
+  The supplied CSS inverts the logo at <=1024px and <=640px, which would
+  recolour approved brand artwork. Overridden here rather than edited out of
+  the vendor file, and the mark keeps its aspect ratio.
+*/
+.mobile-menu-portal .sm-logo-img,
+.mobile-menu-portal .staggered-menu-wrapper[data-open] .sm-logo-img {
+  filter: none !important;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 1px solid var(--rule-gold, rgba(212, 175, 106, 0.55));
+}
+
+/* ---- Toggle: a real button, always reachable ----------------------------- */
+.mobile-menu-portal .sm-toggle {
+  pointer-events: auto;
+  /* Comfortably above the 44x44 minimum touch target. */
+  min-width: 48px;
+  min-height: 48px;
+  padding-inline: 8px;
+  font-family: var(--font-heading, system-ui), sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-gold, #D4AF6A);
+}
+
+.mobile-menu-portal .sm-toggle:focus-visible {
+  outline: 2px solid var(--color-gold, #D4AF6A);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---- Menu items ---------------------------------------------------------- */
+.mobile-menu-portal .sm-panel-item {
+  color: var(--color-ivory, #F9F2E2);
+  font-family: var(--font-heading, system-ui), sans-serif;
+  font-weight: 700;
+  /* Generous rows: easy to hit, and readable on a short screen. */
+  font-size: clamp(1.9rem, 9vw, 2.8rem);
+  line-height: 1.1;
+  padding-block: 2px;
+}
+
+.mobile-menu-portal .sm-panel-item:hover,
+.mobile-menu-portal .sm-panel-item:focus-visible {
+  color: var(--color-signature-teal, #087E83);
+}
+
+.mobile-menu-portal .sm-panel-item:focus-visible {
+  outline: 2px solid var(--color-gold, #D4AF6A);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.mobile-menu-portal .sm-panel-itemWrap + .sm-panel-itemWrap {
+  border-top: 1px solid rgba(249, 242, 226, 0.12);
+  margin-top: 4px;
+  padding-top: 4px;
+}
+
+/* ---- Socials ------------------------------------------------------------- */
+.mobile-menu-portal .sm-socials-title {
+  color: var(--color-gold, #D4AF6A);
+  font-family: var(--font-heading, system-ui), sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.mobile-menu-portal .sm-socials-link {
+  color: var(--color-ivory, #F9F2E2);
+  font-family: var(--font-body, system-ui), sans-serif;
+  font-size: 1rem;
+}
+.mobile-menu-portal .sm-socials-link:hover { color: var(--color-signature-teal, #087E83); }
+.mobile-menu-portal .sm-socials-link:focus-visible {
+  outline: 2px solid var(--color-gold, #D4AF6A);
+  outline-offset: 3px;
+}
+
+/* ---- Closed state: nothing in the panel is focusable ---------------------- */
+.mobile-menu-portal .staggered-menu-panel[aria-hidden='true'] {
+  visibility: hidden;
+}
+.mobile-menu-portal .staggered-menu-wrapper[data-open] .staggered-menu-panel {
+  visibility: visible;
+}
+
+/* ---- Short viewports: tighten so the list still fits ---------------------- */
+@media (max-height: 560px) {
+  .mobile-menu-portal .sm-panel-item { font-size: clamp(1.3rem, 6vh, 1.8rem); }
+  .mobile-menu-portal .staggered-menu-panel { padding-top: calc(var(--header-h, 64px) + 8px); }
+  .mobile-menu-portal .sm-panel-inner { gap: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-portal .sm-logo { transition: none; }
+}

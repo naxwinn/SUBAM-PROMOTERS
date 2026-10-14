@@ -37,6 +37,14 @@ export const features = {
   ourWorkPublic: false,
 }
 
+/**
+ * Verified social accounts only. Keep the Instagram URL in step with
+ * `INSTAGRAM_URL` in components/FloatingContactButtons.jsx.
+ */
+export const socialLinks = [
+  { label: 'Instagram', link: 'https://instagram.com/subampromoters?obrf=amk4MjNtamJjMXl0' },
+]
+
 export type NavItem = { label: string; to: string }
 
 const allNav: NavItem[] = [

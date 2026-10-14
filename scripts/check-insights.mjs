@@ -56,9 +56,11 @@ for (const route of PUBLIC_ROUTES) {
 const mctx = await b.newContext({ ...devices['iPhone 13'] })
 const mp = await mctx.newPage()
 await mp.goto(BASE + '/', { waitUntil: 'networkidle' })
-await mp.locator('.menu-toggle').click()
-await mp.waitForTimeout(400)
-const mobileLinks = await mp.$$eval('#mobile-menu a[href]', els => els.map(e => e.getAttribute('href')))
+await mp.locator('.sm-toggle').click()
+await mp.waitForTimeout(900)
+const mobileLinks = await mp.$$eval('.staggered-menu-panel a[href]', els =>
+  els.map(e => e.getAttribute('href')),
+)
 mobileLinks.some(h => h && h.includes('our-work'))
   ? bad('mobile menu', 'still links to Our Work')
   : ok('mobile menu free of Our Work')

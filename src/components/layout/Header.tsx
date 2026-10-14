@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 
+import MobileMenu from '@/components/layout/MobileMenu'
 import Button from '@/components/ui/Button'
 import { logo } from '@/lib/assets'
 import { company, primaryNav } from '@/lib/site'
@@ -8,15 +9,7 @@ import { company, primaryNav } from '@/lib/site'
 import './header.css'
 
 export default function Header() {
-  const [open, setOpen] = useState(false)
   const [stuck, setStuck] = useState(false)
-  const { pathname } = useLocation()
-  const panelRef = useRef<HTMLDivElement>(null)
-  const toggleRef = useRef<HTMLButtonElement>(null)
-
-  /* Fallback for history navigation (back/forward) while the panel is open.
-     The links themselves also close it on click, so this rarely fires. */
-  useEffect(() => setOpen(false), [pathname])
 
   /* Background appears once the header leaves the top of the page. */
   useEffect(() => {
@@ -25,27 +18,6 @@ export default function Header() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  /* While the mobile panel is open: lock the body, trap Escape, restore focus. */
-  useEffect(() => {
-    if (!open) return
-
-    const { overflow } = document.body.style
-    document.body.style.overflow = 'hidden'
-
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setOpen(false)
-        toggleRef.current?.focus()
-      }
-    }
-    document.addEventListener('keydown', onKey)
-
-    return () => {
-      document.body.style.overflow = overflow
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [open])
 
   return (
     <header className={`site-header ${stuck ? 'is-stuck' : ''}`}>
@@ -89,49 +61,11 @@ export default function Header() {
           </Button>
         </div>
 
-        <button
-          ref={toggleRef}
-          type="button"
-          className="menu-toggle"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          onClick={() => setOpen(value => !value)}
-        >
-          <span className="menu-toggle__bars" data-open={open} aria-hidden="true">
-            <span />
-            <span />
-          </span>
-          {open ? 'Close' : 'Menu'}
-        </button>
       </div>
 
-      <div
-        id="mobile-menu"
-        ref={panelRef}
-        className="mobile-menu"
-        data-open={open}
-        hidden={!open}
-      >
-        <nav aria-label="Primary, mobile">
-          <ul className="mobile-menu__list">
-            {primaryNav.map(item => (
-              <li key={item.to}>
-                <NavLink
-                  to={item.to}
-                  end={item.to === '/'}
-                  onClick={() => setOpen(false)}
-                  className={({ isActive }) => `mobile-menu__link ${isActive ? 'is-active' : ''}`}
-                >
-                  {item.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <Button to="/contact/" variant="gold" size="lg" className="mobile-menu__cta">
-          Discuss Your Project
-        </Button>
-      </div>
+      {/* Mobile navigation lives in a portal on <body>, not inside this
+          header — see the note at the top of MobileMenu.tsx. */}
+      <MobileMenu />
     </header>
   )
 }

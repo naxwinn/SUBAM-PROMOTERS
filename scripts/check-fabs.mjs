@@ -242,8 +242,8 @@ for (const [label, opts, min, max] of [
 const c3 = await b.newContext({ ...devices['iPhone 13'] })
 const p3 = await c3.newPage()
 await p3.goto(BASE + '/', { waitUntil: 'networkidle' })
-await p3.locator('.menu-toggle').click()
-await p3.waitForTimeout(450)
+await p3.locator('.sm-toggle').click()
+await p3.waitForTimeout(900)
 const covered = await p3.evaluate(() => {
   const el = document.querySelector('.fcb__btn--whatsapp')
   const r = el.getBoundingClientRect()
